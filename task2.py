@@ -380,29 +380,42 @@ games = [
 
 def gameData(teamList,gameList):
     Data = {}
-    for i in teamList:
-        Data.update(i['gamesPlayed' : 0,'wins' : 0,'losses' : 0,'ties' : 0,'goalsFor' : 0,'goalsAgainst' : 0])
-    print(i)
-    for i in gameList:
-        home = i[home]
-        homeScore = i[homeScore]
-        away = i[away]
-        awayScore = i[awayScore]
+
+    for x in teamList: #Creating the blank dictionary so that I can add values to it.
+        Data[x] = {'gamesPlayed' : 0,'wins' : 0,'losses' : 0,'ties' : 0,'goalsFor' : 0,'goalsAgainst' : 0}
+        #thisdict = dict(name = "John", age = 36, country = "Norway")
+
+    for i in gameList: #Iterating through the game list to add values for the dictionary.
+        home = i['home']
+        homeScore = i['homeScore']
+        away = i['away']
+        awayScore = i['awayScore']
+        Data[home]['gamesPlayed'] += 1
+        Data[away]['gamesPlayed'] += 1
+        Data[home]['goalsFor'] += homeScore
+        Data[away]['goalsAgainst'] += homeScore
+        Data[away]['goalsFor'] += awayScore
+        Data[home]['goalsAgainst'] += awayScore
+        if homeScore-awayScore>0:
+            Data[home]['wins']  +=1
+            Data[away]['losses']+=1
+        elif homeScore-awayScore<0:
+            Data[home]['losses']+=1
+            Data[away]['wins']  +=1
+        else: 
+            Data[home]['ties'] += 1
+            Data[away]['ties'] += 1
+
+    return Data
+        
 
 
 
 
 def tests():
     teamData = gameData(teams,games)
-    #assert teamData['BC']['gamesPlayed'] == 12
-    #assert teamData['BC']['wins'] == 5
+    assert teamData['BC']['gamesPlayed'] == 12
+    assert teamData['BC']['wins'] == 5
+    print('I did it')
+
 tests()
-"""  'AB' : {
-        'gamesPlayed' : 0,
-        'wins' : 0,
-        'losses' : 0,
-        'ties' : 0,
-        'goalsFor' : 0,
-        'goalsAgainst' : 0
-    },
-    'BC' : {}"""
